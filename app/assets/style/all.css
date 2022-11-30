@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .main_bg_primary {
+    background: linear-gradient(
+      172.7deg,
+      #ffd370 5.12%,
+      #ffd370 53.33%,
+      #ffd370 53.44%,
+      #ffffff 53.45%,
+      #ffffff 94.32%
+    );
+    @apply bg-no-repeat
+  }
+  .logOut_btn_hover {
+    @apply  hover:ring-1 hover:ring-black hover:rounded-md hover:duration-300 hover:ease-in-out
+  }
+}
