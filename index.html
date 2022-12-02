@@ -56,21 +56,21 @@
         <!-- 上方標籤欄 -->
         <ul class="flex justify-around bg-white rounded-t-[10px]">
           <!-- 全部按鈕 -->
-          <li class="w-1/3 text-center border-b-2 active-border">
+          <li id="allList" class="w-1/3 text-center border-b-2 active-border">
             <button class="w-full py-4 cursor-pointer">全部</button>
           </li>
           <!-- 待完成按鈕 -->
-          <li class="w-1/3 border-b-2 text-center border-[#EFEFEF]">
+          <li id="hasToDoList" class="w-1/3 border-b-2 text-center border-[#EFEFEF]">
             <button class="w-full py-4 cursor-pointer">待完成</button>
           </li>
           <!-- 已完成按鈕 -->
-          <li class="w-1/3 border-b-2 text-center border-[#EFEFEF]">
+          <li id="finishList" class="w-1/3 border-b-2 text-center border-[#EFEFEF]">
             <button class="w-full py-4 cursor-pointer">已完成</button>
           </li>
         </ul>
         <!-- 下方標籤欄 -->
         <ul id="todo_ul" class="bg-white px-4 rounded-b-[10px]">
-          <!-- 01 -->
+          <!-- 載入中... -->
           <li class="py-4 border-b border-[#E5E5E5] flex items-center">
             <!-- noCheck -->
             <div
@@ -93,17 +93,19 @@
 
           <!-- 02 -->
           <li
-            class="py-4 border-b border-[#E5E5E5] flex items-center active-text hidden"
+            class="py-4 border-b border-[#E5E5E5] flex items-center"
           >
+          <div class="checkbox_item w-5 h-5">
             <!-- noCheck -->
             <div
               data-status="noCheck"
-              class="hidden border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer"
+              class=" border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer"
             ></div>
             <!-- checked -->
-            <button data-status="checked" class="">
+            <button data-status="checked" class="hidden">
               <img class="" src="./assets/images/check 1.svg" alt="" />
             </button>
+          </div>
 
             <!-- 內容文字 -->
             <p class="ml-4">假文字假文字假文字假文字假文字</p>
@@ -116,17 +118,19 @@
 
           <!-- 03 -->
           <li
-            class="py-4 border-b border-[#E5E5E5] flex items-center active-text hidden"
+            class="py-4 border-b border-[#E5E5E5] flex items-center"
           >
+          <div class="checkbox_item w-5 h-5">
             <!-- noCheck -->
             <div
               data-status="noCheck"
-              class="hidden border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer"
+              class=" border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer"
             ></div>
             <!-- checked -->
-            <button data-status="checked" class="">
+            <button data-status="checked" class="hidden">
               <img class="" src="./assets/images/check 1.svg" alt="" />
             </button>
+          </div>
 
             <!-- 內容文字 -->
             <p class="ml-4">假文字假文字假文字假文字假文字</p>
