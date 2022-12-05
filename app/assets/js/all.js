@@ -1,14 +1,14 @@
 const API_url = `https://fathomless-brushlands-42339.herokuapp.com/todo3`;
 
 let newData = [];
+let unCompleteNum = [];
 
 axios
   .get(API_url)
   .then((res) => {
     newData = res.data;
     init();
-    checkBoxSwitch()
-
+    // checkBoxSwitch();
   })
   .catch((res) => {
     console.log(res);
@@ -17,23 +17,31 @@ axios
 // 函式 => 初始化渲染
 function init() {
   let todoStr = ``;
+  unCompleteNum = newData.filter((filterItem) => {
+    return filterItem["check"] === false;
+  });
   newData.forEach((item, index) => {
+    console.log(item);
     if (index !== newData.length - 1) {
-      todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center">
-      <div class="checkbox_item w-5 h-5  bg-slate-500">
-      <!-- noCheck -->
-      <div
-        data-status="noCheck"
-        class=" border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer"
-      ></div>
-      <!-- checked -->
-      <button data-status="checked" class="select-none hidden">
-        <img class="select-none" src="./assets/images/check 1.svg" alt="" />
-      </button>
-    </div>
+      if (item["check"] === true) {
+        todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center active-text">
+
+        <div class="checkbox_item w-5 h-5  bg-slate-500">
+
+          <!-- noCheck -->
+          <div data-id="${item["id"]}" data-status="noCheck"
+            class="hidden border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer">
+          </div>
+
+          <!-- checked -->
+          <button   class="select-none">
+            <img data-id="${item["id"]}" data-status="checked" class="select-none" src="./assets/images/check 1.svg" alt="" />
+          </button>
+
+        </div>
       
       <!-- 內容文字 -->
-      <p class="ml-4">${item["content"]}</p>
+      <p class="todoText ml-4">${item["content"]}</p>
       
       <!-- 刪除按鈕 -->
       <button origin_id="${item["id"]}" value="deleteTodo" class="ml-auto mr-0">
@@ -41,20 +49,52 @@ function init() {
       </button>
       </li>
       `;
+      } else {
+        todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center">
+
+        <div class="checkbox_item w-5 h-5  bg-slate-500">
+
+          <!-- noCheck -->
+          <div data-id="${item["id"]}" data-status="noCheck"
+            class="border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer">
+          </div>
+
+          <!-- checked -->
+          <button   class="select-none hidden">
+            <img data-id="${item["id"]}" data-status="checked" class="select-none" src="./assets/images/check 1.svg" alt="" />
+          </button>
+
+        </div>
+      
+      <!-- 內容文字 -->
+      <p class="todoText ml-4">${item["content"]}</p>
+      
+      <!-- 刪除按鈕 -->
+      <button origin_id="${item["id"]}" value="deleteTodo" class="ml-auto mr-0">
+        <img src="./assets/images/close (1) 1 (1).svg" alt="" />
+      </button>
+      </li>
+      `;
+      }
     } else {
-      todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center">
-    <!-- noCheck -->
-    <div
-      data-status="noCheck"
-      class="noCheck border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer"
-    ></div>
-    <!-- checked -->
-    <button data-status="checked" class="checked hidden">
-      <img class="" src="./assets/images/check 1.svg" alt="" />
-    </button>
+      if (item["check"] === true) {
+        todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center active-text">
+        <div class="checkbox_item w-5 h-5  bg-slate-500">
+
+          <!-- noCheck -->
+          <div data-id="${item["id"]}" data-status="noCheck"
+          class="hidden border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer">
+          </div>
+
+          <!-- checked -->
+          <button data-status="checked" class="select-none">
+            <img data-id="${item["id"]}" data-status="checked" class="select-none" src="./assets/images/check 1.svg" alt="" />
+          </button>
+
+        </div>
     
     <!-- 內容文字 -->
-    <p class="ml-4">${item["content"]}</p>
+    <p class="ml-4 todoText">${item["content"]}</p>
     
     <!-- 刪除按鈕 -->
     <button origin_id="${item["id"]}" value="deleteTodo" class="ml-auto mr-0">
@@ -64,32 +104,71 @@ function init() {
     
     <!-- ul_footer -->
     <li class="flex items-center justify-between py-[25px]">
-      <p class="text-sm">${newData.length} 個待完成項目</p>
+      <p class="text-sm">${unCompleteNum.length} 個待完成項目</p>
       <button class="text-sm text-[#9F9A91]">清除已完成項目</button>
     </li>
     `;
+      } else {
+        todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center">
+        <div class="checkbox_item w-5 h-5  bg-slate-500">
+
+          <!-- noCheck -->
+          <div data-id="${item["id"]}" data-status="noCheck"
+          class="border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer">
+          </div>
+
+          <!-- checked -->
+          <button data-status="checked" class="select-none hidden">
+            <img data-id="${item["id"]}" data-status="checked" class="select-none" src="./assets/images/check 1.svg" alt="" />
+          </button>
+
+        </div>
+    
+    <!-- 內容文字 -->
+    <p class="ml-4 todoText">${item["content"]}</p>
+    
+    <!-- 刪除按鈕 -->
+    <button origin_id="${item["id"]}" value="deleteTodo" class="ml-auto mr-0">
+      <img src="./assets/images/close (1) 1 (1).svg" alt="" />
+    </button>
+    </li>
+    
+    <!-- ul_footer -->
+    <li class="flex items-center justify-between py-[25px]">
+      <p class="text-sm">${unCompleteNum.length} 個待完成項目</p>
+      <button class="text-sm text-[#9F9A91]">清除已完成項目</button>
+    </li>
+    `;
+      }
     }
   });
   todo_ul.innerHTML = todoStr;
+  checkBoxSwitch()
 }
 // 函式 => 篩選後渲染
 function filterRender(filterData) {
   let todoStr = ``;
   filterData.forEach((item, index) => {
     if (index !== filterData.length - 1) {
-      todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center">
-      <!-- noCheck -->
-      <div
-        data-status="noCheck"
-        class="border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer"
-      ></div>
-      <!-- checked -->
-      <button data-status="checked" class="hidden">
-        <img class="" src="./assets/images/check 1.svg" alt="" />
-      </button>
+      if (item["check"] === true) {
+        todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center active-text">
+
+        <div class="checkbox_item w-5 h-5  bg-slate-500">
+
+          <!-- noCheck -->
+          <div data-id="${item["id"]}" data-status="noCheck"
+            class="hidden border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer">
+          </div>
+
+          <!-- checked -->
+          <button   class="select-none">
+            <img data-id="${item["id"]}" data-status="checked" class="select-none" src="./assets/images/check 1.svg" alt="" />
+          </button>
+
+        </div>
       
       <!-- 內容文字 -->
-      <p class="ml-4">${item["content"]}</p>
+      <p class="todoText ml-4">${item["content"]}</p>
       
       <!-- 刪除按鈕 -->
       <button origin_id="${item["id"]}" value="deleteTodo" class="ml-auto mr-0">
@@ -97,20 +176,52 @@ function filterRender(filterData) {
       </button>
       </li>
       `;
+      } else {
+        todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center">
+
+        <div class="checkbox_item w-5 h-5  bg-slate-500">
+
+          <!-- noCheck -->
+          <div data-id="${item["id"]}" data-status="noCheck"
+            class="border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer">
+          </div>
+
+          <!-- checked -->
+          <button   class="select-none hidden">
+            <img data-id="${item["id"]}" data-status="checked" class="select-none" src="./assets/images/check 1.svg" alt="" />
+          </button>
+
+        </div>
+      
+      <!-- 內容文字 -->
+      <p class="todoText ml-4">${item["content"]}</p>
+      
+      <!-- 刪除按鈕 -->
+      <button origin_id="${item["id"]}" value="deleteTodo" class="ml-auto mr-0">
+        <img src="./assets/images/close (1) 1 (1).svg" alt="" />
+      </button>
+      </li>
+      `;
+      }
     } else {
-      todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center">
-    <!-- noCheck -->
-    <div
-      data-status="noCheck"
-      class="border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer"
-    ></div>
-    <!-- checked -->
-    <button data-status="checked" class="hidden">
-      <img class="" src="./assets/images/check 1.svg" alt="" />
-    </button>
+      if (item["check"] === true) {
+        todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center active-text">
+        <div class="checkbox_item w-5 h-5  bg-slate-500">
+
+          <!-- noCheck -->
+          <div data-id="${item["id"]}" data-status="noCheck"
+          class="hidden border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer">
+          </div>
+
+          <!-- checked -->
+          <button data-status="checked" class="select-none">
+            <img data-id="${item["id"]}" data-status="checked" class="select-none" src="./assets/images/check 1.svg" alt="" />
+          </button>
+
+        </div>
     
     <!-- 內容文字 -->
-    <p class="ml-4">${item["content"]}</p>
+    <p class="ml-4 todoText">${item["content"]}</p>
     
     <!-- 刪除按鈕 -->
     <button origin_id="${item["id"]}" value="deleteTodo" class="ml-auto mr-0">
@@ -120,13 +231,46 @@ function filterRender(filterData) {
     
     <!-- ul_footer -->
     <li class="flex items-center justify-between py-[25px]">
-      <p class="text-sm">${newData.length} 個待完成項目</p>
+      <p class="text-sm">${unCompleteNum.length} 個待完成項目</p>
       <button class="text-sm text-[#9F9A91]">清除已完成項目</button>
     </li>
     `;
+      } else {
+        todoStr += `<li class="py-4 border-b border-[#E5E5E5] flex items-center">
+        <div class="checkbox_item w-5 h-5  bg-slate-500">
+
+          <!-- noCheck -->
+          <div data-id="${item["id"]}" data-status="noCheck"
+          class="border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer">
+          </div>
+
+          <!-- checked -->
+          <button data-status="checked" class="select-none hidden">
+            <img data-id="${item["id"]}" data-status="checked" class="select-none" src="./assets/images/check 1.svg" alt="" />
+          </button>
+
+        </div>
+    
+    <!-- 內容文字 -->
+    <p class="ml-4 todoText">${item["content"]}</p>
+    
+    <!-- 刪除按鈕 -->
+    <button origin_id="${item["id"]}" value="deleteTodo" class="ml-auto mr-0">
+      <img src="./assets/images/close (1) 1 (1).svg" alt="" />
+    </button>
+    </li>
+    
+    <!-- ul_footer -->
+    <li class="flex items-center justify-between py-[25px]">
+      <p class="text-sm">${unCompleteNum.length} 個待完成項目</p>
+      <button class="text-sm text-[#9F9A91]">清除已完成項目</button>
+    </li>
+    `;
+      }
     }
   });
   todo_ul.innerHTML = todoStr;
+  checkBoxSwitch()
 }
 // 函式 => 新增待辦資料
 function API_Post(createObj) {
@@ -170,12 +314,42 @@ function API_DeleteAll() {
 }
 // 函式 => checkbox切換
 function checkBoxSwitch() {
-  $('.checkbox_item').click(function(e){
-    e.preventDefault()
-    $(this).find('div').toggleClass('hidden');
-    $(this).find('button').toggleClass('hidden');
+  $(".checkbox_item").click(function (e) {
+    console.log(123);
+    e.preventDefault();
+    $(this).find("div").toggleClass("hidden");
+    $(this).find("button").toggleClass("hidden");
     $(this.parentNode).toggleClass('active-text')
   });
+
+}
+// 函式 => 狀態改成已完成
+function switchToComplete(e) {
+  let id = e.target.getAttribute("data-id");
+  axios
+    .patch(`https://fathomless-brushlands-42339.herokuapp.com/todo3/${id}`, {
+      check: true,
+    })
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+// 函式 => 狀態改成待完成
+function switchToUnComplete(e) {
+  let id = e.target.getAttribute("data-id");
+  axios
+    .patch(`https://fathomless-brushlands-42339.herokuapp.com/todo3/${id}`, {
+      check: false,
+    })
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 // DOM => 抓整個todoList的form
@@ -190,7 +364,6 @@ const checkbox_item = document.querySelector(".checkbox_item");
 // 監聽 => 整個todoList的form
 todoList.addEventListener("click", (e) => {
   e.preventDefault();
-
   // 監聽是否點到「全部」
   if (e.target.textContent === "全部") {
     console.log("點到全部");
@@ -224,7 +397,7 @@ todoList.addEventListener("click", (e) => {
 
     const filterData = newData.filter((item) => {
       console.log(item);
-      if (item["check"] === "true") {
+      if (item["check"] === "true" || item["check"] === true) {
         return item;
       }
     });
@@ -242,6 +415,9 @@ todoList.addEventListener("click", (e) => {
         console.log(`有執行`);
         API_Delete(origin_id);
         newData.splice(index, 1);
+        $(allList).addClass("active-border");
+        $(hasToDoList).removeClass("active-border");
+        $(finishList).removeClass("active-border");
         init();
       } else {
         console.log(
@@ -251,6 +427,28 @@ todoList.addEventListener("click", (e) => {
         );
       }
     });
+  }
+  // 是否點到checkbox達成狀態切換至已完成
+  if (e.target.getAttribute("data-status") === "noCheck") {
+    // checkBoxSwitch()
+    newData.forEach((item, index) => {
+      if (Number(item["id"]) === Number(e.target.getAttribute("data-id"))) {
+        item["check"] = true;
+      }
+      console.log(newData);
+    });
+    switchToComplete(e);
+  }
+  // 是否點到checkbox達成狀態切換至已完成
+  if (e.target.getAttribute("data-status") === "checked") {
+    // checkBoxSwitch()
+    newData.forEach((item, index) => {
+      if (Number(item["id"]) === Number(e.target.getAttribute("data-id"))) {
+        item["check"] = false;
+      }
+    });
+    console.log(newData);
+    switchToUnComplete(e);
   }
 });
 // 監聽 => 新增待辦的button
@@ -277,7 +475,7 @@ addTodo.addEventListener("click", (e) => {
 });
 // 監聽 => 在新增待辦區塊按下「enter」
 addTodo.addEventListener("keydown", (e) => {
-  if (e.code === "Enter") {
+  if (e.code === "Enter" && e.which === 13) {
     if (e.target.value === ``) {
       alert("請輸入待辦事項");
       return;
