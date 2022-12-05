@@ -2,24 +2,38 @@
 
 var API_url = "https://fathomless-brushlands-42339.herokuapp.com/todo3";
 var newData = [];
+var unCompleteNum = [];
 axios.get(API_url).then(function (res) {
   newData = res.data;
-  init();
-  checkBoxSwitch();
+  init(); // checkBoxSwitch();
 })["catch"](function (res) {
   console.log(res);
 }); // 函式 => 初始化渲染
 
 function init() {
   var todoStr = "";
+  unCompleteNum = newData.filter(function (filterItem) {
+    return filterItem["check"] === false;
+  });
   newData.forEach(function (item, index) {
+    console.log(item);
+
     if (index !== newData.length - 1) {
-      todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center\">\n      <div class=\"checkbox_item w-5 h-5  bg-slate-500\">\n      <!-- noCheck -->\n      <div\n        data-status=\"noCheck\"\n        class=\" border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\"\n      ></div>\n      <!-- checked -->\n      <button data-status=\"checked\" class=\"select-none hidden\">\n        <img class=\"select-none\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n      </button>\n    </div>\n      \n      <!-- \u5167\u5BB9\u6587\u5B57 -->\n      <p class=\"ml-4\">".concat(item["content"], "</p>\n      \n      <!-- \u522A\u9664\u6309\u9215 -->\n      <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n        <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n      </button>\n      </li>\n      ");
+      if (item["check"] === true) {
+        todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center active-text\">\n\n        <div class=\"checkbox_item w-5 h-5  bg-slate-500\">\n\n          <!-- noCheck -->\n          <div data-id=\"".concat(item["id"], "\" data-status=\"noCheck\"\n            class=\"hidden border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\">\n          </div>\n\n          <!-- checked -->\n          <button   class=\"select-none\">\n            <img data-id=\"").concat(item["id"], "\" data-status=\"checked\" class=\"select-none\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n          </button>\n\n        </div>\n      \n      <!-- \u5167\u5BB9\u6587\u5B57 -->\n      <p class=\"todoText ml-4\">").concat(item["content"], "</p>\n      \n      <!-- \u522A\u9664\u6309\u9215 -->\n      <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n        <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n      </button>\n      </li>\n      ");
+      } else {
+        todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center\">\n\n        <div class=\"checkbox_item w-5 h-5  bg-slate-500\">\n\n          <!-- noCheck -->\n          <div data-id=\"".concat(item["id"], "\" data-status=\"noCheck\"\n            class=\"border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\">\n          </div>\n\n          <!-- checked -->\n          <button   class=\"select-none hidden\">\n            <img data-id=\"").concat(item["id"], "\" data-status=\"checked\" class=\"select-none\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n          </button>\n\n        </div>\n      \n      <!-- \u5167\u5BB9\u6587\u5B57 -->\n      <p class=\"todoText ml-4\">").concat(item["content"], "</p>\n      \n      <!-- \u522A\u9664\u6309\u9215 -->\n      <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n        <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n      </button>\n      </li>\n      ");
+      }
     } else {
-      todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center\">\n    <!-- noCheck -->\n    <div\n      data-status=\"noCheck\"\n      class=\"noCheck border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\"\n    ></div>\n    <!-- checked -->\n    <button data-status=\"checked\" class=\"checked hidden\">\n      <img class=\"\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n    </button>\n    \n    <!-- \u5167\u5BB9\u6587\u5B57 -->\n    <p class=\"ml-4\">".concat(item["content"], "</p>\n    \n    <!-- \u522A\u9664\u6309\u9215 -->\n    <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n      <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n    </button>\n    </li>\n    \n    <!-- ul_footer -->\n    <li class=\"flex items-center justify-between py-[25px]\">\n      <p class=\"text-sm\">").concat(newData.length, " \u500B\u5F85\u5B8C\u6210\u9805\u76EE</p>\n      <button class=\"text-sm text-[#9F9A91]\">\u6E05\u9664\u5DF2\u5B8C\u6210\u9805\u76EE</button>\n    </li>\n    ");
+      if (item["check"] === true) {
+        todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center active-text\">\n        <div class=\"checkbox_item w-5 h-5  bg-slate-500\">\n\n          <!-- noCheck -->\n          <div data-id=\"".concat(item["id"], "\" data-status=\"noCheck\"\n          class=\"hidden border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\">\n          </div>\n\n          <!-- checked -->\n          <button data-status=\"checked\" class=\"select-none\">\n            <img data-id=\"").concat(item["id"], "\" data-status=\"checked\" class=\"select-none\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n          </button>\n\n        </div>\n    \n    <!-- \u5167\u5BB9\u6587\u5B57 -->\n    <p class=\"ml-4 todoText\">").concat(item["content"], "</p>\n    \n    <!-- \u522A\u9664\u6309\u9215 -->\n    <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n      <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n    </button>\n    </li>\n    \n    <!-- ul_footer -->\n    <li class=\"flex items-center justify-between py-[25px]\">\n      <p class=\"text-sm\">").concat(unCompleteNum.length, " \u500B\u5F85\u5B8C\u6210\u9805\u76EE</p>\n      <button class=\"text-sm text-[#9F9A91]\">\u6E05\u9664\u5DF2\u5B8C\u6210\u9805\u76EE</button>\n    </li>\n    ");
+      } else {
+        todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center\">\n        <div class=\"checkbox_item w-5 h-5  bg-slate-500\">\n\n          <!-- noCheck -->\n          <div data-id=\"".concat(item["id"], "\" data-status=\"noCheck\"\n          class=\"border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\">\n          </div>\n\n          <!-- checked -->\n          <button data-status=\"checked\" class=\"select-none hidden\">\n            <img data-id=\"").concat(item["id"], "\" data-status=\"checked\" class=\"select-none\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n          </button>\n\n        </div>\n    \n    <!-- \u5167\u5BB9\u6587\u5B57 -->\n    <p class=\"ml-4 todoText\">").concat(item["content"], "</p>\n    \n    <!-- \u522A\u9664\u6309\u9215 -->\n    <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n      <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n    </button>\n    </li>\n    \n    <!-- ul_footer -->\n    <li class=\"flex items-center justify-between py-[25px]\">\n      <p class=\"text-sm\">").concat(unCompleteNum.length, " \u500B\u5F85\u5B8C\u6210\u9805\u76EE</p>\n      <button class=\"text-sm text-[#9F9A91]\">\u6E05\u9664\u5DF2\u5B8C\u6210\u9805\u76EE</button>\n    </li>\n    ");
+      }
     }
   });
   todo_ul.innerHTML = todoStr;
+  checkBoxSwitch();
 } // 函式 => 篩選後渲染
 
 
@@ -27,12 +41,21 @@ function filterRender(filterData) {
   var todoStr = "";
   filterData.forEach(function (item, index) {
     if (index !== filterData.length - 1) {
-      todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center\">\n      <!-- noCheck -->\n      <div\n        data-status=\"noCheck\"\n        class=\"border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\"\n      ></div>\n      <!-- checked -->\n      <button data-status=\"checked\" class=\"hidden\">\n        <img class=\"\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n      </button>\n      \n      <!-- \u5167\u5BB9\u6587\u5B57 -->\n      <p class=\"ml-4\">".concat(item["content"], "</p>\n      \n      <!-- \u522A\u9664\u6309\u9215 -->\n      <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n        <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n      </button>\n      </li>\n      ");
+      if (item["check"] === true) {
+        todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center active-text\">\n\n        <div class=\"checkbox_item w-5 h-5  bg-slate-500\">\n\n          <!-- noCheck -->\n          <div data-id=\"".concat(item["id"], "\" data-status=\"noCheck\"\n            class=\"hidden border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\">\n          </div>\n\n          <!-- checked -->\n          <button   class=\"select-none\">\n            <img data-id=\"").concat(item["id"], "\" data-status=\"checked\" class=\"select-none\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n          </button>\n\n        </div>\n      \n      <!-- \u5167\u5BB9\u6587\u5B57 -->\n      <p class=\"todoText ml-4\">").concat(item["content"], "</p>\n      \n      <!-- \u522A\u9664\u6309\u9215 -->\n      <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n        <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n      </button>\n      </li>\n      ");
+      } else {
+        todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center\">\n\n        <div class=\"checkbox_item w-5 h-5  bg-slate-500\">\n\n          <!-- noCheck -->\n          <div data-id=\"".concat(item["id"], "\" data-status=\"noCheck\"\n            class=\"border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\">\n          </div>\n\n          <!-- checked -->\n          <button   class=\"select-none hidden\">\n            <img data-id=\"").concat(item["id"], "\" data-status=\"checked\" class=\"select-none\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n          </button>\n\n        </div>\n      \n      <!-- \u5167\u5BB9\u6587\u5B57 -->\n      <p class=\"todoText ml-4\">").concat(item["content"], "</p>\n      \n      <!-- \u522A\u9664\u6309\u9215 -->\n      <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n        <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n      </button>\n      </li>\n      ");
+      }
     } else {
-      todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center\">\n    <!-- noCheck -->\n    <div\n      data-status=\"noCheck\"\n      class=\"border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\"\n    ></div>\n    <!-- checked -->\n    <button data-status=\"checked\" class=\"hidden\">\n      <img class=\"\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n    </button>\n    \n    <!-- \u5167\u5BB9\u6587\u5B57 -->\n    <p class=\"ml-4\">".concat(item["content"], "</p>\n    \n    <!-- \u522A\u9664\u6309\u9215 -->\n    <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n      <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n    </button>\n    </li>\n    \n    <!-- ul_footer -->\n    <li class=\"flex items-center justify-between py-[25px]\">\n      <p class=\"text-sm\">").concat(newData.length, " \u500B\u5F85\u5B8C\u6210\u9805\u76EE</p>\n      <button class=\"text-sm text-[#9F9A91]\">\u6E05\u9664\u5DF2\u5B8C\u6210\u9805\u76EE</button>\n    </li>\n    ");
+      if (item["check"] === true) {
+        todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center active-text\">\n        <div class=\"checkbox_item w-5 h-5  bg-slate-500\">\n\n          <!-- noCheck -->\n          <div data-id=\"".concat(item["id"], "\" data-status=\"noCheck\"\n          class=\"hidden border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\">\n          </div>\n\n          <!-- checked -->\n          <button data-status=\"checked\" class=\"select-none\">\n            <img data-id=\"").concat(item["id"], "\" data-status=\"checked\" class=\"select-none\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n          </button>\n\n        </div>\n    \n    <!-- \u5167\u5BB9\u6587\u5B57 -->\n    <p class=\"ml-4 todoText\">").concat(item["content"], "</p>\n    \n    <!-- \u522A\u9664\u6309\u9215 -->\n    <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n      <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n    </button>\n    </li>\n    \n    <!-- ul_footer -->\n    <li class=\"flex items-center justify-between py-[25px]\">\n      <p class=\"text-sm\">").concat(unCompleteNum.length, " \u500B\u5F85\u5B8C\u6210\u9805\u76EE</p>\n      <button class=\"text-sm text-[#9F9A91]\">\u6E05\u9664\u5DF2\u5B8C\u6210\u9805\u76EE</button>\n    </li>\n    ");
+      } else {
+        todoStr += "<li class=\"py-4 border-b border-[#E5E5E5] flex items-center\">\n        <div class=\"checkbox_item w-5 h-5  bg-slate-500\">\n\n          <!-- noCheck -->\n          <div data-id=\"".concat(item["id"], "\" data-status=\"noCheck\"\n          class=\"border border-[#9F9A91] rounded-[5px] w-5 h-5 cursor-pointer\">\n          </div>\n\n          <!-- checked -->\n          <button data-status=\"checked\" class=\"select-none hidden\">\n            <img data-id=\"").concat(item["id"], "\" data-status=\"checked\" class=\"select-none\" src=\"./assets/images/check 1.svg\" alt=\"\" />\n          </button>\n\n        </div>\n    \n    <!-- \u5167\u5BB9\u6587\u5B57 -->\n    <p class=\"ml-4 todoText\">").concat(item["content"], "</p>\n    \n    <!-- \u522A\u9664\u6309\u9215 -->\n    <button origin_id=\"").concat(item["id"], "\" value=\"deleteTodo\" class=\"ml-auto mr-0\">\n      <img src=\"./assets/images/close (1) 1 (1).svg\" alt=\"\" />\n    </button>\n    </li>\n    \n    <!-- ul_footer -->\n    <li class=\"flex items-center justify-between py-[25px]\">\n      <p class=\"text-sm\">").concat(unCompleteNum.length, " \u500B\u5F85\u5B8C\u6210\u9805\u76EE</p>\n      <button class=\"text-sm text-[#9F9A91]\">\u6E05\u9664\u5DF2\u5B8C\u6210\u9805\u76EE</button>\n    </li>\n    ");
+      }
     }
   });
   todo_ul.innerHTML = todoStr;
+  checkBoxSwitch();
 } // 函式 => 新增待辦資料
 
 
@@ -69,11 +92,36 @@ function API_DeleteAll() {
 
 
 function checkBoxSwitch() {
-  $('.checkbox_item').click(function (e) {
+  $(".checkbox_item").click(function (e) {
+    console.log(123);
     e.preventDefault();
-    $(this).find('div').toggleClass('hidden');
-    $(this).find('button').toggleClass('hidden');
+    $(this).find("div").toggleClass("hidden");
+    $(this).find("button").toggleClass("hidden");
     $(this.parentNode).toggleClass('active-text');
+  });
+} // 函式 => 狀態改成已完成
+
+
+function switchToComplete(e) {
+  var id = e.target.getAttribute("data-id");
+  axios.patch("https://fathomless-brushlands-42339.herokuapp.com/todo3/".concat(id), {
+    check: true
+  }).then(function (res) {
+    console.log(res.data);
+  })["catch"](function (err) {
+    console.log(err);
+  });
+} // 函式 => 狀態改成待完成
+
+
+function switchToUnComplete(e) {
+  var id = e.target.getAttribute("data-id");
+  axios.patch("https://fathomless-brushlands-42339.herokuapp.com/todo3/".concat(id), {
+    check: false
+  }).then(function (res) {
+    console.log(res.data);
+  })["catch"](function (err) {
+    console.log(err);
   });
 } // DOM => 抓整個todoList的form
 
@@ -123,7 +171,7 @@ todoList.addEventListener("click", function (e) {
     var _filterData = newData.filter(function (item) {
       console.log(item);
 
-      if (item["check"] === "true") {
+      if (item["check"] === "true" || item["check"] === true) {
         return item;
       }
     });
@@ -145,11 +193,39 @@ todoList.addEventListener("click", function (e) {
         console.log("\u6709\u57F7\u884C");
         API_Delete(origin_id);
         newData.splice(index, 1);
+        $(allList).addClass("active-border");
+        $(hasToDoList).removeClass("active-border");
+        $(finishList).removeClass("active-border");
         init();
       } else {
         console.log("\u6C92\u57F7\u884C\uFF0C\u6309\u9215\u7684id\u662F".concat(e.target.parentNode.getAttribute("origin_id"), "\uFF0C\u800C\u6E05\u55AE\u7684id\u5247\u662F").concat(item["id"]));
       }
     });
+  } // 是否點到checkbox達成狀態切換至已完成
+
+
+  if (e.target.getAttribute("data-status") === "noCheck") {
+    // checkBoxSwitch()
+    newData.forEach(function (item, index) {
+      if (Number(item["id"]) === Number(e.target.getAttribute("data-id"))) {
+        item["check"] = true;
+      }
+
+      console.log(newData);
+    });
+    switchToComplete(e);
+  } // 是否點到checkbox達成狀態切換至已完成
+
+
+  if (e.target.getAttribute("data-status") === "checked") {
+    // checkBoxSwitch()
+    newData.forEach(function (item, index) {
+      if (Number(item["id"]) === Number(e.target.getAttribute("data-id"))) {
+        item["check"] = false;
+      }
+    });
+    console.log(newData);
+    switchToUnComplete(e);
   }
 }); // 監聽 => 新增待辦的button
 
@@ -177,7 +253,7 @@ addTodo.addEventListener("click", function (e) {
 }); // 監聽 => 在新增待辦區塊按下「enter」
 
 addTodo.addEventListener("keydown", function (e) {
-  if (e.code === "Enter") {
+  if (e.code === "Enter" && e.which === 13) {
     if (e.target.value === "") {
       alert("請輸入待辦事項");
       return;
